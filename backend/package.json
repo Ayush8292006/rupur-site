@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "node --watch server.js --dev",
     "start": "node server.js",
-    "build:site": "node scripts/build-site.js"
+    "build:site": "node scripts/build-site.js",
+    "test:mail": "node scripts/test-mail.js"
   },
   "engines": {
     "node": ">=18.18"

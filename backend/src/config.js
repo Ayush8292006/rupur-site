@@ -9,13 +9,16 @@ const ROOT = path.join(__dirname, '..');
 
 function loadEnvFile(file) {
   const vars = {};
-  let text = '';
-  try { text = fs.readFileSync(file, 'utf8'); } catch { return vars; }
-  for (let line of text.split(/\r?\n/)) {
-    line = line.trim();
+  let buf;
+  try { buf = fs.readFileSync(file); } catch { return vars; }
+  // Windows Notepad kabhi "Unicode" (UTF-16) me save karta hai – woh bhi padh lo
+  let text = buf[0] === 0xff && buf[1] === 0xfe ? buf.toString('utf16le') : buf.toString('utf8');
+  text = text.replace(/^\uFEFF/, '');
+  for (let line of text.split(/\r?\n|\r/)) {
+    line = line.replace(/[\u00A0\u200B-\u200D\uFEFF]/g, ' ').trim();
     if (!line || line.startsWith('#') || !line.includes('=')) continue;
     const i = line.indexOf('=');
-    const k = line.slice(0, i).trim();
+    const k = line.slice(0, i).replace(/^export\s+/, '').trim();
     let v = line.slice(i + 1).trim();
     if (v.length >= 2 && (v[0] === '"' || v[0] === "'") && v.at(-1) === v[0]) v = v.slice(1, -1);
     vars[k] = v;
@@ -23,7 +26,8 @@ function loadEnvFile(file) {
   return vars;
 }
 
-const fileVars = loadEnvFile(path.join(ROOT, '.env'));
+const ENV_FILE = path.join(ROOT, '.env');
+const fileVars = loadEnvFile(ENV_FILE);
 
 /** Pehle server ke environment variables, phir .env file */
 function env(key, fallback = undefined) {
@@ -41,6 +45,8 @@ function envBool(key, fallback = false) {
 const APP_ENV = env('APP_ENV', 'production');
 
 module.exports = {
+  ENV_FILE,
+  fileVars,
   env,
   envBool,
   ROOT,
