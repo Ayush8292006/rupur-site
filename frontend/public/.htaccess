@@ -1,0 +1,18 @@
+# Hostinger (Apache): website ke pages (/cart, /orders...) refresh karne par 404 na aaye
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # /api backend ka hai, use mat chhedo
+  RewriteRule ^api(/|$) - [L]
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# HTTPS pe hi khule
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
