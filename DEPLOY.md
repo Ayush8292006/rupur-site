@@ -96,6 +96,14 @@ SSL (https) on rakho.
 
 ---
 
+## Demo: Vercel (website) + Render (backend)
+Client ko dikhane ke liye (free). Website Vercel pe, API Render pe; `frontend/vercel.json` `/api` ko Render pe bhejta hai.
+- Render → New Web Service → repo → Root Directory `backend`, Build `npm install`, Start `npm start`.
+  Env: `.env` ki lines (PORT wali nahi) + `APP_URL=https://<vercel-url>`, `DB_DRIVER=sqlite`, `DELHIVERY_ENABLED=false`, Razorpay **test** keys.
+- `frontend/vercel.json` me `RENDER-APP-NAAM` ki jagah Render ka naam → push.
+- Vercel → project → Root Directory `frontend` (Vite) → Deploy.
+- Free Render 15 min baad so jaata hai (pehli baar ~1 min) aur SQLite ka data redeploy pe mit jaata hai – sirf demo ke liye.
+
 ## 3. Razorpay setup
 Razorpay Dashboard → **Account & Settings → Webhooks → Add**
 - URL: `https://www.rupurfragrances.com/api/razorpay/webhook`
