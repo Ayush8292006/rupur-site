@@ -60,5 +60,7 @@ module.exports = {
   FREE_SHIPPING_ABOVE: Number(env('FREE_SHIPPING_ABOVE', 999)),
   SHIPPING_ONE_PIECE: Number(env('SHIPPING_ONE_PIECE', 80)),
   SHIPPING_MULTI_PIECE: Number(env('SHIPPING_MULTI_PIECE', 100)),
+  // Naye member ka pehla order: itna % extra off (0 = band)
+  WELCOME_DISCOUNT_PERCENT: Math.max(0, Math.min(50, Number(env('WELCOME_DISCOUNT_PERCENT', 5)) || 0)),
   MAX_QTY_PER_ITEM: 10,
 };

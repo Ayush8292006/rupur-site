@@ -77,6 +77,7 @@ function itemsTable(o, items) {
   const ship = Number(o.shipping) === 0 ? 'Free' : rupees(o.shipping);
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">${rows}
 <tr><td style="padding:10px 0 4px;color:#6B6158">Subtotal</td><td style="padding:10px 0 4px;text-align:right">${rupees(o.subtotal)}</td></tr>
+${Number(o.discount) > 0 ? `<tr><td style="padding:4px 0;color:#2E7D4F">New member offer</td><td style="padding:4px 0;text-align:right;color:#2E7D4F">− ${rupees(o.discount)}</td></tr>` : ''}
 <tr><td style="padding:4px 0;color:#6B6158">Shipping</td><td style="padding:4px 0;text-align:right">${ship}</td></tr>
 <tr><td style="padding:10px 0;font-weight:bold;font-size:16px;border-top:2px solid #1A1A1A">Total paid</td><td style="padding:10px 0;text-align:right;font-weight:bold;font-size:16px;border-top:2px solid #1A1A1A">${rupees(o.total)}</td></tr>
 </table>`;
@@ -87,7 +88,7 @@ const addressBlock = (o) => `<p style="font-size:14px;line-height:1.6;margin:0">
 function textSummary(o, items) {
   let t = `Order ${o.order_no}\n\n`;
   for (const i of items) t += `- ${i.name} (${i.size}) x${i.qty} = ${rupees(i.line_total)}\n`;
-  t += `\nSubtotal: ${rupees(o.subtotal)}\nShipping: ${Number(o.shipping) ? rupees(o.shipping) : 'Free'}\nTotal paid: ${rupees(o.total)}\n\nDeliver to:\n${o.name}\n${o.address_line1} ${o.address_line2 || ''}\n${o.city}, ${o.state} - ${o.pincode}\nPhone: ${o.phone}\n`;
+  t += `\nSubtotal: ${rupees(o.subtotal)}\n${Number(o.discount) > 0 ? `New member offer: -${rupees(o.discount)}\n` : ''}Shipping: ${Number(o.shipping) ? rupees(o.shipping) : 'Free'}\nTotal paid: ${rupees(o.total)}\n\nDeliver to:\n${o.name}\n${o.address_line1} ${o.address_line2 || ''}\n${o.city}, ${o.state} - ${o.pincode}\nPhone: ${o.phone}\n`;
   if (o.awb) t += `\nTracking number (Delhivery): ${o.awb}\n`;
   return t;
 }

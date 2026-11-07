@@ -28,6 +28,8 @@ function verifyPassword(password, stored) {
 }
 
 const publicUser = (u) => ({ id: Number(u.id), name: u.name, email: u.email, phone: u.phone });
+// welcomeOffer: naye member ko pehle order pe kitna % off (0 = nahi)
+const userOut = async (u) => ({ ...publicUser(u), welcomeOffer: await require('./offer').welcomePercent(u) });
 
 function parseCookies(header = '') {
   const out = {};
@@ -110,7 +112,7 @@ async function signup(req, res) {
     name, email, phone, hashPassword(password), now(),
   ]);
   await startSession(req, res, r.insertId);
-  res.status(201).json({ user: publicUser(await db.get('SELECT * FROM users WHERE id = ?', [r.insertId])) });
+  res.status(201).json({ user: await userOut(await db.get('SELECT * FROM users WHERE id = ?', [r.insertId])) });
 }
 
 async function login(req, res) {
@@ -129,7 +131,7 @@ async function login(req, res) {
   }
   await clearAttempts(key);
   await startSession(req, res, u.id);
-  res.json({ user: publicUser(u) });
+  res.json({ user: await userOut(u) });
 }
 
 async function logout(req, res) {
@@ -141,7 +143,7 @@ async function logout(req, res) {
 
 async function me(req, res) {
   const u = await currentUser(req);
-  res.json({ user: u ? publicUser(u) : null });
+  res.json({ user: u ? await userOut(u) : null });
 }
 
 async function forgot(req, res) {
@@ -184,7 +186,7 @@ async function reset(req, res) {
   await db.run('UPDATE password_resets SET used = 1 WHERE id = ?', [row.id]);
   await db.run('DELETE FROM sessions WHERE user_id = ?', [row.user_id]); // sab jagah se logout
   await startSession(req, res, row.user_id);
-  res.json({ user: publicUser(await db.get('SELECT * FROM users WHERE id = ?', [row.user_id])) });
+  res.json({ user: await userOut(await db.get('SELECT * FROM users WHERE id = ?', [row.user_id])) });
 }
 
 module.exports = {

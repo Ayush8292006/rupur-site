@@ -9,6 +9,7 @@ const { env } = require('./config');
 const { fail, str, now, logLine, validEmail, cleanPhone } = require('./util');
 const { requireUser } = require('./auth');
 const { priceCart, findProduct } = require('./products');
+const { welcomePercent } = require('./offer');
 const rzp = require('./razorpay');
 const dlv = require('./delhivery');
 const { sendOrderEmails } = require('./mailer');
@@ -50,7 +51,7 @@ function orderWeight(items) {
 /* POST /api/checkout/create */
 async function create(req, res) {
   const user = await requireUser(req);
-  const cart = priceCart(req.body.items);
+  const cart = priceCart(req.body.items, await welcomePercent(user));
   const addr = validateAddress(req.body.address && typeof req.body.address === 'object' ? req.body.address : {});
 
   // Pincode pe delivery hoti hai? (pata na chale toh order rokte nahi)
@@ -62,10 +63,10 @@ async function create(req, res) {
   const orderNo = newOrderNo();
   const orderId = await db.tx(async (t) => {
     const r = await t.run(
-      `INSERT INTO orders (order_no, user_id, status, subtotal, shipping, total, item_count, name, phone, email,
+      `INSERT INTO orders (order_no, user_id, status, subtotal, shipping, discount, total, item_count, name, phone, email,
         address_line1, address_line2, city, state, pincode, created_at)
-       VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [orderNo, user.id, cart.subtotal, cart.shipping, cart.total, cart.itemCount, addr.name, addr.phone, addr.email,
+       VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [orderNo, user.id, cart.subtotal, cart.shipping, cart.discount, cart.total, cart.itemCount, addr.name, addr.phone, addr.email,
         addr.address_line1, addr.address_line2, addr.city, addr.state, addr.pincode, now()]
     );
     for (const i of cart.items) {
@@ -87,6 +88,7 @@ async function create(req, res) {
   res.status(201).json({
     orderNo,
     total: cart.total,
+    discount: cart.discount,
     razorpay: {
       key: env('RAZORPAY_KEY_ID'), // Key ID public hoti hai, secret nahi
       orderId: order.id,
@@ -180,6 +182,7 @@ function publicOrder(o, items, tracking = null) {
     paidAt: o.paid_at,
     subtotal: Number(o.subtotal),
     shipping: Number(o.shipping),
+    discount: Number(o.discount || 0),
     total: Number(o.total),
     itemCount: Number(o.item_count),
     address: {

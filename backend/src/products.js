@@ -49,7 +49,8 @@ function list(req, res) {
 const shippingFor = (subtotal, count) => (subtotal >= FREE_SHIPPING_ABOVE ? 0 : count <= 1 ? SHIPPING_ONE_PIECE : SHIPPING_MULTI_PIECE);
 
 /** Cart ka hisaab hamesha server pe (browser ke price pe bharosa nahi). items: [{id, qty}] */
-function priceCart(items) {
+/** discountPercent: naye member ka offer (offer.js) */
+function priceCart(items, discountPercent = 0) {
   if (!Array.isArray(items) || !items.length) fail('Your cart is empty.', 422);
   const merged = new Map();
   for (const it of items) {
@@ -72,12 +73,15 @@ function priceCart(items) {
     lines.push({ id: p.id, name: p.name, size: p.size, img: p.img, price: p.price, qty, lineTotal: line });
   }
   if (problems.length) fail(problems[0], 409, { problems });
-  const shipping = shippingFor(subtotal, count);
-  return { items: lines, itemCount: count, subtotal, shipping, total: subtotal + shipping, weight };
+  const shipping = shippingFor(subtotal, count); // free shipping discount se pehle wale amount pe
+  const discount = Math.round((subtotal * discountPercent) / 100);
+  return { items: lines, itemCount: count, subtotal, discount, discountPercent: discount ? discountPercent : 0, shipping, total: subtotal - discount + shipping, weight };
 }
 
-function quote(req, res) {
-  const { weight, ...q } = priceCart(req.body.items);
+async function quote(req, res) {
+  // late require: auth -> mailer -> ... (circular se bachne ke liye)
+  const user = await require('./auth').currentUser(req);
+  const { weight, ...q } = priceCart(req.body.items, await require('./offer').welcomePercent(user));
   res.json({ ...q, freeShippingAbove: FREE_SHIPPING_ABOVE });
 }
 

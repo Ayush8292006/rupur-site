@@ -49,6 +49,7 @@ function schema(driver) {
       status VARCHAR(20) NOT NULL DEFAULT 'pending',
       subtotal INT NOT NULL,
       shipping INT NOT NULL,
+      discount INT NOT NULL DEFAULT 0,
       total INT NOT NULL,
       item_count INT NOT NULL,
       name VARCHAR(120) NOT NULL,
@@ -168,6 +169,8 @@ async function init() {
       const driver = env('DB_DRIVER', 'mysql');
       impl = driver === 'sqlite' ? sqliteImpl() : mysqlImpl();
       for (const sql of schema(driver)) await impl.exec(sql);
+      // Purane database me naya column (discount) jodo – pehle se ho toh error ignore
+      try { await impl.exec('ALTER TABLE orders ADD COLUMN discount INT NOT NULL DEFAULT 0'); } catch { /* column pehle se hai */ }
       return impl;
     })();
     ready.catch(() => { ready = null; }); // agli request pe dobara koshish

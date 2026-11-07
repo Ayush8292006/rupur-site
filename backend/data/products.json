@@ -30,70 +30,124 @@
     "name": "Romantic Dance",
     "desc": "Candle-lit, rose-warm evenings",
     "size": "30 ML",
-    "img": "https://idyllic-tarsier-20717f.netlify.app/img/romantic.webp",
+    "img": "/products/romantic-dance-card.webp",
     "accent": "#7A1F2B",
     "gender": "Women",
     "type": "Perfume",
     "price": 228,
     "mrp": 285,
     "soldOut": false,
-    "weight": 300
+    "weight": 300,
+    "images": [
+      "/products/romantic-dance-1.webp",
+      "/products/romantic-dance-2.webp",
+      "/products/romantic-dance-3.webp"
+    ],
+    "story": "A warm, romantic scent for evenings out, with soft woods and gentle spice that stay close to the skin through the night."
   },
   {
     "id": "dhaval",
     "name": "Dhaval",
     "desc": "Clean, woody, daily office wear",
     "size": "30 ML",
-    "img": "https://idyllic-tarsier-20717f.netlify.app/img/dhaval.webp",
+    "img": "/products/dhaval-card.webp",
     "accent": "#3A4250",
     "gender": "Men",
     "type": "Perfume",
     "price": 151,
     "mrp": 189,
     "soldOut": false,
-    "weight": 300
+    "weight": 300,
+    "images": [
+      "/products/dhaval-1.webp",
+      "/products/dhaval-2.webp",
+      "/products/dhaval-3.webp"
+    ],
+    "story": "Elegant, sophisticated and refined. A clean everyday scent of white oud and jasmine over amber, patchouli and white musk.",
+    "notes": [
+      "White oud",
+      "Jasmine",
+      "Amber",
+      "Patchouli",
+      "White musk"
+    ]
   },
   {
     "id": "ira",
     "name": "Ira",
     "desc": "A garden of soft florals",
     "size": "30 ML",
-    "img": "https://idyllic-tarsier-20717f.netlify.app/img/ira.webp",
+    "img": "/products/ira-card.webp",
     "accent": "#B4586C",
     "gender": "Women",
     "type": "Perfume",
     "price": 212,
     "mrp": 265,
     "soldOut": false,
-    "weight": 300
+    "weight": 300,
+    "images": [
+      "/products/ira-1.webp",
+      "/products/ira-2.webp",
+      "/products/ira-3.webp"
+    ],
+    "story": "A soft, romantic floral that opens with fresh citrus and jasmine, blooms into rose and orange blossom, and settles on sandalwood, musk, amber and vanilla.",
+    "notes": [
+      "Fresh citrus & jasmine",
+      "Rose",
+      "Orange blossom",
+      "Mint & green leaves",
+      "Sandalwood & musk",
+      "Amber & vanilla"
+    ]
   },
   {
     "id": "sea-faze",
     "name": "Sea Faze",
-    "desc": "Salt air and a cool breeze",
+    "desc": "The sensation of freshness",
     "size": "30 ML",
-    "img": "https://idyllic-tarsier-20717f.netlify.app/img/seafaze.webp",
+    "img": "/products/sea-faze-card.webp",
     "accent": "#1F5FA8",
     "gender": "Unisex",
     "type": "Perfume",
     "price": 151,
     "mrp": 189,
     "soldOut": false,
-    "weight": 300
+    "weight": 300,
+    "images": [
+      "/products/sea-faze-1.webp",
+      "/products/sea-faze-2.webp",
+      "/products/sea-faze-3.webp"
+    ],
+    "story": "Salt air and a cool sea breeze. Fresh citrus and sea notes lifted by jasmine, mint and rosemary, resting on white sandalwood, musk and a touch of oud.",
+    "notes": [
+      "Fresh sea notes",
+      "Citrus",
+      "Jasmine & orange flower",
+      "Mint & rosemary",
+      "White sandalwood & musk",
+      "Deep oud"
+    ]
   },
   {
     "id": "giraft",
     "name": "Giraft",
     "desc": "Dark, bold and unchained",
     "size": "50 ML",
-    "img": "https://idyllic-tarsier-20717f.netlify.app/img/giraft.webp",
+    "img": "/products/giraft-card.webp",
     "accent": "#2A2622",
     "gender": "Men",
     "type": "Perfume",
     "price": 559,
     "mrp": 699,
     "soldOut": true,
-    "weight": 350
+    "weight": 350,
+    "images": [
+      "/products/giraft-1.webp",
+      "/products/giraft-2.webp",
+      "/products/giraft-3.webp",
+      "/products/giraft-4.webp"
+    ],
+    "story": "Every fragrance tells a story. Luxury isn't worn – it's remembered. A dark, smoky blend with warm spices and deep woods, made for men who like to stand out."
   },
   {
     "id": "rose-elixir",

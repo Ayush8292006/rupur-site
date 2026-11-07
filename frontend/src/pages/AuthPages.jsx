@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 import { Alert, Card, Field, GoldButton, PageShell } from '../components/ui';
+import { NEW_MEMBER_OFFER } from '../context/CartContext';
 
 /* Login ke baad kahan jaana hai (?next=/checkout) – sirf apni site ke andar */
 function useNext() {
@@ -107,6 +108,10 @@ export function SignupPage() {
 
   return (
     <PageShell narrow eyebrow="Join RUPUR" title="Create" accent="account" sub="It takes less than a minute.">
+      <div className="page-in mb-5 flex items-center gap-4 rounded-2xl border border-gold/30 bg-gold/10 px-5 py-4">
+        <span className="font-serif text-3xl leading-none text-gold-light">{NEW_MEMBER_OFFER}%</span>
+        <p className="text-sm leading-snug text-cream">Extra off on your first order when you create an account. Applied automatically.</p>
+      </div>
       <Card className="page-in p-6 md:p-8">
         <form onSubmit={submit} className="space-y-5" noValidate>
           <Field label="Full name" name="name" autoComplete="name" value={form.name} onChange={set('name')} error={errors.name} />

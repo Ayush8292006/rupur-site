@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-const IMG_BASE = 'https://idyllic-tarsier-20717f.netlify.app';
 const VIDEO = '/rupur-video.mp4';
 const POSTER = '/rupur-poster.jpg';
 
@@ -25,9 +24,9 @@ const CATEGORIES = [
 ];
 
 const COLLECTIONS = [
-  { title: 'Perfume Spray', sub: 'Every spray, a mood', img: IMG_BASE + '/img/ira.webp', filter: 'All' },
+  { title: 'Perfume Spray', sub: 'Every spray, a mood', img: '/products/ira-card.webp', filter: 'All' },
   { title: 'Roll-On Attar', sub: 'Pure oils, no alcohol', img: '/products/rose-elixir-card.webp', filter: 'Attar' },
-  { title: 'Gift Sets', sub: 'Boxed & ready to gift', img: IMG_BASE + '/img/romantic.webp', filter: 'All' },
+  { title: 'Gift Sets', sub: 'Boxed & ready to gift', img: '/products/romantic-dance-card.webp', filter: 'All' },
 ];
 
 function useReveal() {

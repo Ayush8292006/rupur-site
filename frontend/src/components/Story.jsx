@@ -5,14 +5,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const IMG_BASE = 'https://idyllic-tarsier-20717f.netlify.app';
+const IMG_BASE = ''; // photos ab apni site pe: public/products
 
 const GOLD = '#B08D57';
 const INK = '#1A1A1A';
 
 const PHOTOS = [
   {
-    src: '/img/romantic-poster.webp',
+    src: '/products/romantic-dance-3.webp',
     name: 'Romantic Dance',
     line: 'Candle-lit, rose-warm evenings',
     className: 'left-0 top-[6%] h-[72%] w-[62%] z-10',
@@ -20,7 +20,7 @@ const PHOTOS = [
     speed: -40,
   },
   {
-    src: '/img/ira.webp',
+    src: '/products/ira-1.webp',
     name: 'ईरा · Ira',
     line: 'A garden of soft florals',
     className: 'right-0 top-0 h-[46%] w-[48%] z-20',
@@ -28,7 +28,7 @@ const PHOTOS = [
     speed: -90,
   },
   {
-    src: '/img/seafaze.webp',
+    src: '/products/sea-faze-1.webp',
     name: 'Sea Faze',
     line: 'Salt air and a cool breeze',
     className: 'bottom-[2%] right-[6%] h-[44%] w-[52%] z-30',

@@ -71,4 +71,7 @@ export const useCart = () => useContext(CartContext);
 
 /** Shipping: ₹999 ya zyada free, warna 1 piece ₹80, 2+ piece ₹100 (server pe bhi yahi rule hai) */
 // eslint-disable-next-line react-refresh/only-export-components
+// Naye member ka pehle order pe offer (asli % server batata hai: user.welcomeOffer)
+export const NEW_MEMBER_OFFER = 5;
+export const discountFor = (subtotal, pct) => Math.round((subtotal * (pct || 0)) / 100);
 export const shippingFor = (subtotal, count) => (count === 0 || subtotal >= 999 ? 0 : count <= 1 ? 80 : 100);

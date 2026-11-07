@@ -188,6 +188,7 @@ export function OrderDetailPage() {
             </ul>
             <dl className="mt-2 space-y-2 border-t border-white/10 pt-4 text-[15px]">
               <div className="flex justify-between"><dt className="text-mist">Subtotal</dt><dd className="tabular-nums">{rupees(order.subtotal)}</dd></div>
+              {order.discount > 0 && <div className="flex justify-between text-gold-light"><dt>New member offer</dt><dd className="tabular-nums">− {rupees(order.discount)}</dd></div>}
               <div className="flex justify-between"><dt className="text-mist">Shipping</dt><dd className="tabular-nums">{order.shipping ? rupees(order.shipping) : 'Free'}</dd></div>
               <div className="flex justify-between text-lg"><dt>Total paid</dt><dd className="font-semibold tabular-nums">{rupees(order.total)}</dd></div>
             </dl>

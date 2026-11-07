@@ -39,7 +39,7 @@ api.use((req, res, next) => {
 
 api.get('/health', (req, res) => res.json({ ok: true }));
 api.get('/products', products.list);
-api.post('/cart/quote', products.quote);
+api.post('/cart/quote', wrap(products.quote));
 api.get('/pincode/:pin', wrap(dlv.pincodeRoute));
 
 api.post('/auth/signup', wrap(auth.signup));

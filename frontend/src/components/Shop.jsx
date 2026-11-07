@@ -77,7 +77,7 @@ function Card({ p, index, onOpen, isLarge }) {
           src={p.img}
           alt={p.name}
           loading="lazy"
-          className="h-full w-full scale-[1.12] object-cover transition-[filter] duration-700 group-hover:brightness-105"
+          className="h-full w-full scale-[1.05] object-cover transition-[filter] duration-700 group-hover:brightness-105"
         />
         <span
           aria-hidden
@@ -187,7 +187,9 @@ function FullView({ items, index, originEl, onClose, onChange }) {
       <div ref={panelRef} className="absolute inset-0 overflow-y-auto transition-[background-color] duration-700" style={{ backgroundColor: CREAM_FOR(p.accent) }}>
         <div className="grid min-h-full lg:grid-cols-2">
           <div className="relative aspect-[3/4] overflow-hidden sm:aspect-[4/3] lg:aspect-auto lg:min-h-full" style={{ backgroundColor: `${p.accent}22` }}>
-            <img key={src} src={src} alt={p.name} className="fv-img fv-swap absolute inset-0 h-full w-full object-cover" />
+            {/* Poori photo dikhe (zoom/crop nahi): peeche usi photo ka blur, aage poori photo */}
+            <img aria-hidden src={src} alt="" className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl" />
+            <img key={src} src={src} alt={p.name} className="fv-img fv-swap absolute inset-0 h-full w-full object-contain" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
             <span className="fv-in absolute bottom-6 left-6 font-serif text-[18vw] leading-none text-white/15 lg:text-[10vw]">{String(index + 1).padStart(2, '0')}</span>
             {imgs.length > 1 && (

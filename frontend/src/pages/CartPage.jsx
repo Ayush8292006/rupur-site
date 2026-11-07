@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart, shippingFor } from '../context/CartContext';
+import { useCart, shippingFor, discountFor, NEW_MEMBER_OFFER } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { rupees } from '../lib/api';
 import { Card, EmptyState, GoldButton, GhostButton, PageShell } from '../components/ui';
@@ -15,17 +15,25 @@ export function QtyStepper({ qty, onChange, max = 10, small = false }) {
   );
 }
 
-export function OrderSummary({ subtotal, count, shipping, children }) {
+export function OrderSummary({ subtotal, count, shipping, discount = 0, discountPercent = 0, guest = false, children }) {
   const left = 999 - subtotal;
   return (
     <Card className="p-6 md:p-7">
       <h2 className="font-serif text-2xl text-cream">Order summary</h2>
       <dl className="mt-5 space-y-3 text-[15px]">
         <div className="flex justify-between"><dt className="text-mist">Items ({count})</dt><dd className="tabular-nums text-cream">{rupees(subtotal)}</dd></div>
+        {discount > 0 && (
+          <div className="flex justify-between"><dt className="text-gold-light">New member offer ({discountPercent}%)</dt><dd className="tabular-nums text-gold-light">− {rupees(discount)}</dd></div>
+        )}
         <div className="flex justify-between"><dt className="text-mist">Shipping</dt><dd className="tabular-nums text-cream">{shipping === 0 ? <span className="text-gold-light">Free</span> : rupees(shipping)}</dd></div>
-        <div className="flex justify-between border-t border-white/10 pt-4 text-lg"><dt className="text-cream">Total</dt><dd className="font-semibold tabular-nums text-cream">{rupees(subtotal + shipping)}</dd></div>
+        <div className="flex justify-between border-t border-white/10 pt-4 text-lg"><dt className="text-cream">Total</dt><dd className="font-semibold tabular-nums text-cream">{rupees(subtotal - discount + shipping)}</dd></div>
       </dl>
       <p className="mt-2 text-xs text-mist">No taxes or hidden charges. You pay exactly this.</p>
+      {guest && count > 0 && (
+        <p className="mt-4 rounded-xl border border-gold/25 px-4 py-3 text-sm text-cream">
+          New here? <Link to="/signup?next=/checkout" className="font-semibold text-gold-light hover:underline">Create an account</Link> and get an extra {NEW_MEMBER_OFFER}% off your first order.
+        </p>
+      )}
       {count > 0 && left > 0 && (
         <p className="mt-4 rounded-xl bg-gold/10 px-4 py-3 text-sm text-gold-pale">Add {rupees(left)} more for free shipping.</p>
       )}
@@ -39,6 +47,8 @@ export default function CartPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const shipping = shippingFor(subtotal, count);
+  const pct = user?.welcomeOffer || 0;
+  const discount = discountFor(subtotal, pct);
   const soldOut = lines.filter((l) => l.product.soldOut);
 
   if (!lines.length) {
@@ -83,7 +93,7 @@ export default function CartPage() {
         </ul>
 
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <OrderSummary subtotal={subtotal} count={count} shipping={shipping}>
+          <OrderSummary subtotal={subtotal} count={count} shipping={shipping} discount={discount} discountPercent={pct} guest={!user}>
             <GoldButton onClick={checkout} disabled={soldOut.length > 0} className="mt-6 w-full">
               {user ? 'Checkout' : 'Log in to checkout'}
             </GoldButton>

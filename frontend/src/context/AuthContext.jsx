@@ -26,6 +26,9 @@ export function AuthProvider({ children }) {
     return d.user;
   }, []);
 
+  // Order ke baad offer khatam – user dobara lo
+  const refresh = useCallback(() => api('/auth/me').then((d) => setUser(d.user)).catch(() => {}), []);
+
   const logout = useCallback(async () => {
     try { await api('/auth/logout', { method: 'POST', body: {} }); } finally { setUser(null); }
   }, []);
@@ -37,7 +40,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, ready, login, signup, logout, resetPassword }}>
+    <AuthContext.Provider value={{ user, ready, login, signup, logout, resetPassword, refresh }}>
       {children}
     </AuthContext.Provider>
   );

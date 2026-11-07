@@ -17,6 +17,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import { LoginPage, SignupPage, ForgotPasswordPage, ResetPasswordPage } from './pages/AuthPages';
 import { OrdersPage, OrderDetailPage } from './pages/OrdersPages';
 import PolicyPage from './pages/PolicyPage';
+import WelcomePopup from './components/WelcomePopup';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,6 +124,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <WelcomePopup />
     </div>
   );
 }

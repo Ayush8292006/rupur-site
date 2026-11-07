@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useCart, shippingFor } from '../context/CartContext';
+import { useCart, shippingFor, discountFor } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { api, loadRazorpay, rupees } from '../lib/api';
 import { Alert, Card, Field, GoldButton, Loading, PageShell, Spinner } from '../components/ui';
@@ -28,7 +28,7 @@ function validate(a) {
 }
 
 export default function CheckoutPage() {
-  const { user, ready } = useAuth();
+  const { user, ready, refresh } = useAuth();
   const { lines, items, count, subtotal, clear } = useCart();
   const navigate = useNavigate();
   const [addr, setAddr] = useState(() => {
@@ -72,6 +72,9 @@ export default function CheckoutPage() {
   if (!lines.length && !paying) return <Navigate to="/cart" replace />;
 
   const shipping = shippingFor(subtotal, count);
+  const pct = user?.welcomeOffer || 0;
+  const discount = discountFor(subtotal, pct);
+  const total = subtotal - discount + shipping;
   const set = (k) => (e) => {
     const v = k === 'pincode' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value;
     setAddr((a) => ({ ...a, [k]: v }));
@@ -114,6 +117,7 @@ export default function CheckoutPage() {
           try {
             const v = await api('/checkout/verify', { method: 'POST', body: resp });
             clear();
+            refresh();
             navigate(`/orders/${v.order.orderNo}?placed=1`, { replace: true });
           } catch (err) {
             setPaying(false);
@@ -171,7 +175,7 @@ export default function CheckoutPage() {
         </Card>
 
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <OrderSummary subtotal={subtotal} count={count} shipping={shipping}>
+          <OrderSummary subtotal={subtotal} count={count} shipping={shipping} discount={discount} discountPercent={pct}>
             <ul className="mt-5 space-y-3 border-t border-white/10 pt-5">
               {lines.map(({ id, qty, product: p }) => (
                 <li key={id} className="flex items-center gap-3 text-sm">
@@ -183,7 +187,7 @@ export default function CheckoutPage() {
             </ul>
             {error && <div className="mt-5"><Alert>{error}</Alert></div>}
             <GoldButton type="submit" loading={paying} className="mt-6 w-full">
-              {paying ? 'Opening payment' : `Pay ${rupees(subtotal + shipping)}`}
+              {paying ? 'Opening payment' : `Pay ${rupees(total)}`}
             </GoldButton>
             <p className="mt-4 text-center text-xs leading-relaxed text-mist">
               Payments are handled by Razorpay. All sales are final – please check your order before paying.
