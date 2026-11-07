@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://RENDER-APP-NAAM.onrender.com/api/:path*" },
+    { "source": "/api/:path*", "destination": "https://rupur-backend.onrender.com/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
